@@ -10,12 +10,18 @@ let x5_vals = []; // 전일 시가
 
 let y_vals = []; // 금일 시가
 
-let m1, m2, m3, m4, m5, b;
+let m1, m2, m3, m4, m5, b, rows;
 
-const learnignRate = 0.00000000008;
+const learnignRate = 0.000000000008;
 const optimizer = tf.train.sgd(learnignRate);
 
 function setup() {
+  m1 = tf.variable(tf.scalar(random(1)));
+  m2 = tf.variable(tf.scalar(random(1)));
+  m3 = tf.variable(tf.scalar(random(1)));
+  m4 = tf.variable(tf.scalar(random(1)));
+  m5 = tf.variable(tf.scalar(random(1)));
+  b = tf.variable(tf.scalar(random(1)));
 }
 
 function readExcel() {
@@ -26,14 +32,9 @@ function readExcel() {
       let workBook = XLSX.read(data, { type: 'binary' });
       workBook.SheetNames.forEach(function (sheetName) {
           console.log('SheetName: ' + sheetName);
-          let rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
+          rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
           console.log(JSON.stringify(rows));
           dataSet(rows);
-
-          start();
-          console.log(y_vals);
-
-          시가입력(rows);
       })
   };
   reader.readAsBinaryString(input.files[0]);
@@ -50,19 +51,19 @@ function 시가입력(rows) {
 }
 
 function start() {
-  m1 = tf.variable(tf.scalar(random(1)));
-  m2 = tf.variable(tf.scalar(random(1)));
-  m3 = tf.variable(tf.scalar(random(1)));
-  m4 = tf.variable(tf.scalar(random(1)));
-  m5 = tf.variable(tf.scalar(random(1)));
-  b = tf.variable(tf.scalar(random(1)));
+  $('span[id=loading]').removeClass('d-none');
 
-  tf.tidy(() => {
-    for(let i = 0; i < 500; i++) {
-      const ys = tf.tensor(y_vals); // 진짜 y
-      optimizer.minimize(() => loss(predict(x2_vals, x3_vals, x4_vals, x5_vals), ys));
-    }
-  });
+  setTimeout(function() {
+    tf.tidy(() => {
+      for(let i = 0; i < 1000; i++) {
+        const ys = tf.tensor(y_vals); // 진짜 y
+        optimizer.minimize(() => loss(predict(x2_vals, x3_vals, x4_vals, x5_vals), ys));
+      }
+    });
+
+    $('span[id=loading]').addClass('d-none');
+    시가입력(rows);
+  }, 100);
 }
 
 function dataSet(arr) {
@@ -131,7 +132,6 @@ function predict(x2, x3, x4, x5) { // 계산하여 y 구하기
   const mx5 = xs5.mul(m5);
 
   const ys = mx2.add(mx3).add(mx4).add(mx5).add(b);
-
   console.log(ys.dataSync());
 
   return ys;
@@ -144,8 +144,11 @@ function predict(x2, x3, x4, x5) { // 계산하여 y 구하기
 //  y_vals.push(y);
 //}
 
-function draw1() { // tensorflow.js 104 선형회귀
+function draw() { // tensorflow.js 104 선형회귀
 
+  
+
+  //$('#알파고').val(_ys);
   
 
   /*

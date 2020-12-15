@@ -21,6 +21,9 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
 
+        <!-- jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
         <script src="sketch2.js"></script>
 
 
@@ -97,7 +100,11 @@
                 <h1>거래소 일자별시세</h1>
                 <p class="lead">엑셀 파일 선택하면 알파고 동작</p>
                 <input type="file" onchange="readExcel()"><br/><br/>
-                다음날 시세 : <input type="text" id="다음날시세">
+                <button class="btn btn-primary" onclick="start()">
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="loading"></span>
+                    <span class="sr-only">AlphaGo...</span>
+                </button>
+                <input type="text" id="다음날시세">
             </main>
             <footer class="mt-auto text-white-50">
                 <p>만든이 <a href="https://blog.naver.com/wjd0r" class="text-white">개발 스토리</a>, by wjd0r@naver.com</p>
