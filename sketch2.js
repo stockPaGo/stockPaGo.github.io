@@ -12,7 +12,7 @@ let y_vals = []; // 금일 시가
 
 let m1, m2, m3, m4, m5, b;
 
-const learnignRate = 0.0000000000008;
+const learnignRate = 0.000000000008;
 const optimizer = tf.train.sgd(learnignRate);
 
 function setup() {
