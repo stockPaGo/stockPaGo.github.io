@@ -12,8 +12,9 @@ let y_vals = []; // 금일 시가
 
 let m1, m2, m3, m4, m5, b, rows;
 
-const learnignRate = 0.000000000008;
-const optimizer = tf.train.sgd(learnignRate);
+let learnignRate,optimizer;
+
+let 예상가 = 0;
 
 function setup() {
   m1 = tf.variable(tf.scalar(random(1)));
@@ -25,15 +26,19 @@ function setup() {
 }
 
 function readExcel() {
+  learnignRate = 0.0000000001;
+  optimizer = tf.train.sgd(learnignRate);
+  예상가 = 0;
+
   let input = event.target;
   let reader = new FileReader();
   reader.onload = function () {
       let data = reader.result;
       let workBook = XLSX.read(data, { type: 'binary' });
       workBook.SheetNames.forEach(function (sheetName) {
-          console.log('SheetName: ' + sheetName);
+          //console.log('SheetName: ' + sheetName);
           rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
-          console.log(JSON.stringify(rows));
+          //console.log(JSON.stringify(rows));
           dataSet(rows);
       })
   };
@@ -45,28 +50,66 @@ function 알파고출력(text) {
   t.value = text;
 }
 
-function 시가입력(rows) {
-  var t = document.getElementById('다음날시세');
-  t.value = Math.round(String(predict(parseFloat(rows[0].저가.replace(',','')),parseFloat(rows[0].고가.replace(',','')),parseFloat(rows[0].종가.replace(',','')),parseFloat(rows[0].시가.replace(',','')))).replace('Tensor','').replace(/a/gi,"")) + "원";
+function 시가입력(rows, type='시가') {
+  var t = document.getElementById(type);
+  t.value = Math.round(String(predict(parseFloat(rows[0].저가.replace(',','')),parseFloat(rows[0].고가.replace(',','')),parseFloat(rows[0].종가.replace(',','')),parseFloat(rows[0].시가.replace(',','')))).replace('Tensor','').replace(/a/gi,""));
+  
+  //console.log("t.value : " + Number(t.value));
+  //console.log("예상가 : " + Number(예상가));
+  console.log("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
+
+  let 소숫점예상가 = Number(String(predict(parseFloat(rows[0].저가.replace(',','')),parseFloat(rows[0].고가.replace(',','')),parseFloat(rows[0].종가.replace(',','')),parseFloat(rows[0].시가.replace(',','')))).replace('Tensor','').replace(/a/gi,""));
+
+  let 갭 = Math.abs(소숫점예상가 - 예상가);
+  if(갭 > 0.1) {
+    let 러닝배율 = 1;
+    if(갭 > 1) {
+      러닝배율 = 1.0001;
+    } else if(갭 <= 1) {
+      러닝배율 = 0.9999;
+    }
+
+    예상가 = t.value;
+    learnignRate = learnignRate * 러닝배율;
+    console.log("learnignRate:"+learnignRate);
+    optimizer = tf.train.sgd(learnignRate);
+    start(type);
+  }
 }
 
-function start() {
-  $('span[id=loading]').removeClass('d-none');
+function start(type='시가') {
+  if(type=='시가') {
+    $('span[id=loading시가]').removeClass('d-none');
+  } else if (type=='저가') {
+    dataSet(rows, '저가');
+    $('span[id=loading저가]').removeClass('d-none');
+  } else if (type=='고가') {
+    dataSet(rows, '고가');
+    $('span[id=loading고가]').removeClass('d-none');
+  }
 
   setTimeout(function() {
     tf.tidy(() => {
-      for(let i = 0; i < 5000; i++) {
+      for(let i = 0; i < 10; i++) {
         const ys = tf.tensor(y_vals); // 진짜 y
         optimizer.minimize(() => loss(predict(x2_vals, x3_vals, x4_vals, x5_vals), ys));
       }
     });
 
-    $('span[id=loading]').addClass('d-none');
-    시가입력(rows);
-  }, 100);
+    if(type=='시가') {
+      $('span[id=loading시가]').addClass('d-none');
+      시가입력(rows);
+    } else if (type=='저가') {
+      $('span[id=loading저가]').addClass('d-none');
+      시가입력(rows, '저가');
+    } else if (type=='고가') {
+      $('span[id=loading고가]').addClass('d-none');
+      시가입력(rows, '고가');
+    }
+  }, 1);
 }
 
-function dataSet(arr) {
+function dataSet(arr, type='시가') {
   x2_vals = []; // 전일 저가
   x3_vals = []; // 전일 고가
   x4_vals = []; // 전일 종가
@@ -79,25 +122,26 @@ function dataSet(arr) {
     
 
     if(getData() != t['년/월/일'] && 금일시가 != 0) {
-      console.log(getData() +"!=" + t['년/월/일']);
-      console.log("날짜 : " +t['년/월/일'].replace('/','.'));
-      console.log("저가 : " +parseFloat(t.저가.replace(',','')) );
+      //console.log(getData() +"!=" + t['년/월/일']);
+      //console.log("날짜 : " +t['년/월/일'].replace('/','.'));
+      //console.log("저가 : " +parseFloat(t.저가.replace(',','')) );
       x2_vals.push(parseFloat(t.저가.replace(',','')));
 
-      console.log("고가 : " +parseFloat(t.고가.replace(',','')) );
+      //console.log("고가 : " +parseFloat(t.고가.replace(',','')) );
       x3_vals.push(parseFloat(t.고가.replace(',','')));
 
-      console.log("종가 : " +parseFloat(t.종가.replace(',','')) );
+      //console.log("종가 : " +parseFloat(t.종가.replace(',','')) );
       x4_vals.push(parseFloat(t.종가.replace(',','')));
 
-      console.log("시가 : " +parseFloat(t.시가.replace(',','')) );
+      //console.log("시가 : " +parseFloat(t.시가.replace(',','')) );
       x5_vals.push(parseFloat(t.시가.replace(',','')));
 
-      console.log("금일시가 : " + 금일시가);
+      //console.log("금일시가 : " + 금일시가);
+
       y_vals.push(금일시가);
     }
 
-    금일시가 = parseFloat(t.시가.replace(',',''))
+    금일시가 = type=='저가' ? parseFloat(t.저가.replace(',','')) : type=='고가' ? parseFloat(t.고가.replace(',','')) : parseFloat(t.시가.replace(',',''));
   });
 }
 
@@ -132,7 +176,7 @@ function predict(x2, x3, x4, x5) { // 계산하여 y 구하기
   const mx5 = xs5.mul(m5);
 
   const ys = mx2.add(mx3).add(mx4).add(mx5).add(b);
-  console.log(ys.dataSync());
+  //console.log(ys.dataSync());
 
   return ys;
 }

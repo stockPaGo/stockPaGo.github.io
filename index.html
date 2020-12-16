@@ -99,12 +99,34 @@
             <main class="px-3">
                 <h1>거래소 일자별시세</h1>
                 <p class="lead">엑셀 파일 선택하면 알파고 동작</p>
-                <input type="file" onchange="readExcel()"><br/><br/>
-                <button class="btn btn-primary" onclick="start()">
-                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="loading"></span>
-                    <span class="sr-only">AlphaGo...</span>
-                </button>
-                <input type="text" id="다음날시세">
+
+                <div class="mb-3">
+                    <input class="form-control" type="file" id="formFile" onchange="readExcel()">
+                </div>
+
+                <div class="input-group mb-3">
+                    <input type="text" id="시가" class="form-control" placeholder="시가" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <button class="btn btn-primary" onclick="start()">
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="loading시가"></span>
+                        <span class="sr-only">AlphaGo...</span>
+                    </button> 
+                </div>
+
+                <div class="input-group mb-3">
+                    <input type="text" id="저가" class="form-control" placeholder="저가" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <button class="btn btn-primary" onclick="start('저가')">
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="loading저가"></span>
+                        <span class="sr-only">AlphaGo...</span>
+                    </button> 
+                </div>
+
+                <div class="input-group mb-3">
+                    <input type="text" id="고가" class="form-control" placeholder="고가" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <button class="btn btn-primary" onclick="start('고가')">
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="loading고가"></span>
+                        <span class="sr-only">AlphaGo...</span>
+                    </button> 
+                </div>
             </main>
             <footer class="mt-auto text-white-50">
                 <p>만든이 <a href="https://blog.naver.com/wjd0r" class="text-white">개발 스토리</a>, by wjd0r@naver.com</p>
