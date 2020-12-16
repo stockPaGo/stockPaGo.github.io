@@ -26,7 +26,7 @@ function setup() {
 }
 
 function readExcel() {
-  learnignRate = 0.0000000001;
+  learnignRate = 0.00000000001;
   optimizer = tf.train.sgd(learnignRate);
   예상가 = 0;
 
