@@ -16,6 +16,10 @@ let learnignRate,optimizer;
 
 let 예상가 = 0;
 
+function test() {
+  return "test";
+}
+
 function setup() {
   m1 = tf.variable(tf.scalar(random(1)));
   m2 = tf.variable(tf.scalar(random(1)));
