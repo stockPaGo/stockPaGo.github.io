@@ -30,7 +30,7 @@ function setup() {
 }
 
 function readExcel() {
-  learnignRate = 0.0000000000000000001;
+  learnignRate = 0.000000000000001;
   optimizer = tf.train.sgd(learnignRate);
   예상가 = 0;
 
@@ -68,9 +68,9 @@ function 시가입력(rows, type='시가') {
   if(갭 > 0.1) {
     let 러닝배율 = 1;
     if(갭 > 1) {
-      러닝배율 = 1.001;
+      러닝배율 = 1.01;
     } else if(갭 <= 1) {
-      러닝배율 = 0.999;
+      러닝배율 = 0.99;
     }
 
     예상가 = t.value;
