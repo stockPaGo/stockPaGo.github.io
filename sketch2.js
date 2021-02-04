@@ -129,23 +129,23 @@ function dataSet(arr, type='시가') {
       //console.log(getData() +"!=" + t['년/월/일']);
       //console.log("날짜 : " +t['년/월/일'].replace('/','.'));
       //console.log("저가 : " +parseFloat(t.저가.replace(',','')) );
-      x2_vals.push(parseFloat(t.저가.replace(',','')));
+      x2_vals.push(parseFloat(t['저가'].replace(',','')));
 
       //console.log("고가 : " +parseFloat(t.고가.replace(',','')) );
-      x3_vals.push(parseFloat(t.고가.replace(',','')));
+      x3_vals.push(parseFloat(t['고가'].replace(',','')));
 
       //console.log("종가 : " +parseFloat(t.종가.replace(',','')) );
-      x4_vals.push(parseFloat(t.종가.replace(',','')));
+      x4_vals.push(parseFloat(t['종가'].replace(',','')));
 
       //console.log("시가 : " +parseFloat(t.시가.replace(',','')) );
-      x5_vals.push(parseFloat(t.시가.replace(',','')));
+      x5_vals.push(parseFloat(t['시가'].replace(',','')));
 
       //console.log("금일시가 : " + 금일시가);
 
       y_vals.push(금일시가);
     }
 
-    금일시가 = type=='저가' ? parseFloat(t.저가.replace(',','')) : type=='고가' ? parseFloat(t.고가.replace(',','')) : parseFloat(t.시가.replace(',',''));
+    금일시가 = type=='저가' ? parseFloat(t['저가'].replace(',','')) : type=='고가' ? parseFloat(t['고가'].replace(',','')) : parseFloat(t['시가'].replace(',',''));
   });
 }
 
