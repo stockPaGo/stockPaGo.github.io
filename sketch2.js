@@ -56,13 +56,13 @@ function 알파고출력(text) {
 
 function 시가입력(rows, type='시가') {
   var t = document.getElementById(type);
-  t.value = Math.round(String(predict(parseFloat(rows[0].저가.replace(',','')),parseFloat(rows[0].고가.replace(',','')),parseFloat(rows[0].종가.replace(',','')),parseFloat(rows[0].시가.replace(',','')))).replace('Tensor','').replace(/a/gi,""));
+  t.value = Math.round(String(predict(parseFloat(String(rows[0].저가).replace(',','')),parseFloat(String(rows[0].고가).replace(',','')),parseFloat(String(rows[0].종가).replace(',','')),parseFloat(String(rows[0].시가).replace(',','')))).replace('Tensor','').replace(/a/gi,""));
   
   //console.log("t.value : " + Number(t.value));
   //console.log("예상가 : " + Number(예상가));
   console.log("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
 
-  let 소숫점예상가 = Number(String(predict(parseFloat(rows[0].저가.replace(',','')),parseFloat(rows[0].고가.replace(',','')),parseFloat(rows[0].종가.replace(',','')),parseFloat(rows[0].시가.replace(',','')))).replace('Tensor','').replace(/a/gi,""));
+  let 소숫점예상가 = Number(String(predict(parseFloat(String(rows[0].저가).replace(',','')),parseFloat(String(rows[0].고가).replace(',','')),parseFloat(String(rows[0].종가).replace(',','')),parseFloat(String(rows[0].시가).replace(',','')))).replace('Tensor','').replace(/a/gi,""));
 
   let 갭 = Math.abs(소숫점예상가 - 예상가);
   if(갭 > 0.1) {
