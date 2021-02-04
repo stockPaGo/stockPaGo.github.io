@@ -125,7 +125,7 @@ function dataSet(arr, type='시가') {
   arr.reduceRight((누적값, t, i, 요소) => {
     
 
-    if(getData() != t['년/월/일'] && 금일시가 != 0) {
+    if(getData() != t['일자'] && 금일시가 != 0) {
       //console.log(getData() +"!=" + t['년/월/일']);
       //console.log("날짜 : " +t['년/월/일'].replace('/','.'));
       //console.log("저가 : " +parseFloat(t.저가.replace(',','')) );
