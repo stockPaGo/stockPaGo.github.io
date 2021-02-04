@@ -56,13 +56,13 @@ function 알파고출력(text) {
 
 function 시가입력(rows, type='시가') {
   var t = document.getElementById(type);
-  t.value = Math.round(String(predict(parseFloat(String(rows[0].저가).replace(',','')),parseFloat(String(rows[0].고가).replace(',','')),parseFloat(String(rows[0].종가).replace(',','')),parseFloat(String(rows[0].시가).replace(',','')))).replace('Tensor','').replace(/a/gi,""));
+  t.value = Math.round(String(predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가))).replace('Tensor','').replace(/a/gi,""));
   
   //console.log("t.value : " + Number(t.value));
   //console.log("예상가 : " + Number(예상가));
   console.log("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
 
-  let 소숫점예상가 = Number(String(predict(parseFloat(String(rows[0].저가).replace(',','')),parseFloat(String(rows[0].고가).replace(',','')),parseFloat(String(rows[0].종가).replace(',','')),parseFloat(String(rows[0].시가).replace(',','')))).replace('Tensor','').replace(/a/gi,""));
+  let 소숫점예상가 = Number(String(predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가))).replace('Tensor','').replace(/a/gi,""));
 
   let 갭 = Math.abs(소숫점예상가 - 예상가);
   if(갭 > 0.1) {
@@ -129,23 +129,23 @@ function dataSet(arr, type='시가') {
       //console.log(getData() +"!=" + t['년/월/일']);
       //console.log("날짜 : " +t['년/월/일'].replace('/','.'));
       //console.log("저가 : " +parseFloat(t.저가.replace(',','')) );
-      x2_vals.push(parseFloat(String(t['저가']).replace(',','')));
+      x2_vals.push(parseFloat(t['저가']));
 
       //console.log("고가 : " +parseFloat(t.고가.replace(',','')) );
-      x3_vals.push(parseFloat(String(t['고가']).replace(',','')));
+      x3_vals.push(parseFloat(t['고가']));
 
       //console.log("종가 : " +parseFloat(t.종가.replace(',','')) );
-      x4_vals.push(parseFloat(String(t['종가']).replace(',','')));
+      x4_vals.push(parseFloat(t['종가']));
 
       //console.log("시가 : " +parseFloat(t.시가.replace(',','')) );
-      x5_vals.push(parseFloat(String(t['시가']).replace(',','')));
+      x5_vals.push(parseFloat(t['시가']));
 
       //console.log("금일시가 : " + 금일시가);
 
       y_vals.push(금일시가);
     }
 
-    금일시가 = type=='저가' ? parseFloat(String(t['저가']).replace(',','')) : type=='고가' ? parseFloat(String(t['고가']).replace(',','')) : parseFloat(String(t['시가']).replace(',',''));
+    금일시가 = type=='저가' ? parseFloat(t['저가']) : type=='고가' ? parseFloat(t['고가']) : parseFloat(t['시가']);
   });
 }
 
