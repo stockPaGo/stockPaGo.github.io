@@ -16,6 +16,8 @@ let learnignRate,optimizer;
 
 let 예상가 = 0;
 
+let consolelog = (t) => {document.getElementById('console').value += "\n" + t}
+
 function test() {
   return "test";
 }
@@ -57,14 +59,24 @@ function 알파고출력(text) {
 function 시가입력(rows, type='시가') {
   var t = document.getElementById(type);
   t.value = Math.round(String(predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가))).replace('Tensor','').replace(/a/gi,""));
-  
+
+  consolelog("저가 : " + rows[0].저가);
+  consolelog("고가 : " + rows[0].고가);
+  consolelog("종가 : " + rows[0].종가);
+  consolelog("시가 : " + rows[0].시가);
+
   //console.log("t.value : " + Number(t.value));
   //console.log("예상가 : " + Number(예상가));
   console.log("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
 
+  consolelog("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
+
   let 소숫점예상가 = Number(String(predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가))).replace('Tensor','').replace(/a/gi,""));
 
   let 갭 = Math.abs(소숫점예상가 - 예상가);
+
+    consolelog("갭 : " + 갭);
+
   if(갭 > 0.1) {
     let 러닝배율 = 1;
     if(갭 > 1) {
@@ -74,6 +86,9 @@ function 시가입력(rows, type='시가') {
     }
 
     예상가 = t.value;
+
+      consolelog("예상가 : " + 예상가);
+
     learnignRate = learnignRate * 러닝배율;
     console.log("learnignRate:"+learnignRate);
     optimizer = tf.train.sgd(learnignRate);
@@ -82,6 +97,9 @@ function 시가입력(rows, type='시가') {
 }
 
 function start(type='시가') {
+
+    consolelog("시가 버튼 클릭!");
+
   if(type=='시가') {
     $('span[id=loading시가]').removeClass('d-none');
   } else if (type=='저가') {
