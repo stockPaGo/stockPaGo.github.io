@@ -3,20 +3,20 @@
 */
 
 //let x1_vals = [14063434, 43811016, 22327173, 29703942, 23677989, 28130533, 28490496, 25000338, 24077996]; // 거래량
-let x2_vals = []; // 전일 저가
-let x3_vals = []; // 전일 고가
-let x4_vals = []; // 전일 종가
-let x5_vals = []; // 전일 시가
+var x2_vals = []; // 전일 저가
+var x3_vals = []; // 전일 고가
+var x4_vals = []; // 전일 종가
+var x5_vals = []; // 전일 시가
 
-let y_vals = []; // 금일 시가
+var y_vals = []; // 금일 시가
 
-let m1, m2, m3, m4, m5, b, rows;
+var m1, m2, m3, m4, m5, b, rows;
 
-let learnignRate,optimizer;
+var learnignRate,optimizer;
 
-let 예상가 = 0;
+var 예상가 = 0;
 
-let consolelog = (t) => {document.getElementById('console').value += "\n" + t}
+var consolelog = (t) => {document.getElementById('console').value += "\n" + t}
 
 function test() {
   return "test";
@@ -60,35 +60,13 @@ function 시가입력(rows, type='시가') {
   var t = document.getElementById(type);
   t.value = Math.round(String(predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가))).replace('Tensor','').replace(/a/gi,""));
 
-  consolelog("저가 : " + rows[0].저가);
-  consolelog("고가 : " + rows[0].고가);
-  consolelog("종가 : " + rows[0].종가);
-  consolelog("시가 : " + rows[0].시가);
-
-
-    consolelog("parseFloat저가 : " + parseFloat(rows[0].저가));
-    consolelog("parseFloat고가 : " + parseFloat(rows[0].고가));
-    consolelog("parseFloat종가 : " + parseFloat(rows[0].종가));
-    consolelog("parseFloat시가 : " + parseFloat(rows[0].시가));
-
-
-    consolelog("predict : " + predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가)));
-    consolelog("String : " + String(predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가))));
-
   //console.log("t.value : " + Number(t.value));
   //console.log("예상가 : " + Number(예상가));
   console.log("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
 
-  consolelog("t.value : " + t.value);
-  consolelog("예상가 : " + 예상가);
-
-  consolelog("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
-
   let 소숫점예상가 = Number(String(predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가))).replace('Tensor','').replace(/a/gi,""));
 
   let 갭 = Math.abs(소숫점예상가 - 예상가);
-
-    consolelog("갭 : " + 갭);
 
   if(갭 > 0.1) {
     let 러닝배율 = 1;
@@ -100,8 +78,6 @@ function 시가입력(rows, type='시가') {
 
     예상가 = t.value;
 
-      consolelog("예상가 : " + 예상가);
-
     learnignRate = learnignRate * 러닝배율;
     console.log("learnignRate:"+learnignRate);
     optimizer = tf.train.sgd(learnignRate);
@@ -110,9 +86,6 @@ function 시가입력(rows, type='시가') {
 }
 
 function start(type='시가') {
-
-    consolelog("시가 버튼 클릭!");
-
   if(type=='시가') {
     $('span[id=loading시가]').removeClass('d-none');
   } else if (type=='저가') {
@@ -197,6 +170,7 @@ function loss(pred, labels) { // 오차 구하기..
     consolelog("오차 구하기");
     consolelog("pred : " + pred);
     consolelog("labels : " + labels);
+    consolelog("오차 : " + pred.sub(labels).square().mean());
 
   return pred.sub(labels).square().mean();
 }
@@ -217,6 +191,8 @@ function predict(x2, x3, x4, x5) { // 계산하여 y 구하기
   const mx5 = xs5.mul(m5);
   const ys = mx2.add(mx3).add(mx4).add(mx5).add(b);
   //console.log(ys.dataSync());
+
+    consolelog("ys : " + ys);
 
   return ys;
 }
