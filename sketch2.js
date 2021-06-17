@@ -212,10 +212,15 @@ function predict(x2, x3, x4, x5) { // 계산하여 y 구하기
     consolelog("xs5 : " + xs5);
   // y = mx1 + mx2 + mx3 + b;
 
+    consolelog("m2 : " + m2);
+    consolelog("m3 : " + m3);
+    consolelog("m4 : " + m4);
+    consolelog("m5 : " + m5);
+
+
   //const mx1 = xs1.mul(m1);
   const mx2 = xs2.mul(m2);
     consolelog("ms2 : " + mx2);
-
   const mx3 = xs3.mul(m3);
     consolelog("ms3 : " + mx3);
   const mx4 = xs4.mul(m4);
