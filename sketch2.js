@@ -65,6 +65,16 @@ function 시가입력(rows, type='시가') {
   consolelog("종가 : " + rows[0].종가);
   consolelog("시가 : " + rows[0].시가);
 
+
+    consolelog("parseFloat저가 : " + parseFloat(rows[0].저가));
+    consolelog("parseFloat고가 : " + parseFloat(rows[0].고가));
+    consolelog("parseFloat종가 : " + parseFloat(rows[0].종가));
+    consolelog("parseFloat시가 : " + parseFloat(rows[0].시가));
+
+
+    consolelog("predict : " + predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가)));
+    consolelog("String : " + String(predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가))));
+
   //console.log("t.value : " + Number(t.value));
   //console.log("예상가 : " + Number(예상가));
   console.log("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
