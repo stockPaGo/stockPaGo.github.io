@@ -226,6 +226,8 @@ function predict(x2, x3, x4, x5) { // 계산하여 y 구하기
   const ys = mx2.add(mx3).add(mx4).add(mx5).add(b);
   //console.log(ys.dataSync());
 
+    consolelog("ys : " + ys);
+
   return ys;
 }
 
