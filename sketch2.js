@@ -125,10 +125,10 @@ function start(type='시가') {
 
   setTimeout(function() {
     tf.tidy(() => {
-      for(let i = 0; i < 10; i++) {
+      //for(let i = 0; i < 10; i++) {
         const ys = tf.tensor(y_vals); // 진짜 y
         optimizer.minimize(() => loss(predict(x2_vals, x3_vals, x4_vals, x5_vals), ys));
-      }
+      //}
     });
 
     if(type=='시가') {
