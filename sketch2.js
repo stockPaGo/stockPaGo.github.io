@@ -69,6 +69,9 @@ function 시가입력(rows, type='시가') {
   //console.log("예상가 : " + Number(예상가));
   console.log("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
 
+  consolelog("t.value : " + t.value);
+  consolelog("예상가 : " + 예상가);
+
   consolelog("차이 : " + Math.abs(Number(t.value) - Number(예상가)));
 
   let 소숫점예상가 = Number(String(predict(parseFloat(rows[0].저가),parseFloat(rows[0].고가),parseFloat(rows[0].종가),parseFloat(rows[0].시가))).replace('Tensor','').replace(/a/gi,""));
