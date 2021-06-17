@@ -199,16 +199,29 @@ function loss(pred, labels) { // 오차 구하기..
 function predict(x2, x3, x4, x5) { // 계산하여 y 구하기
   //const xs1 = tf.tensor(x1);
   const xs2 = tf.tensor(x2);
+
+    consolelog("xs2 : " + xs2);
+
   const xs3 = tf.tensor(x3);
+    consolelog("xs3 : " + xs3);
   const xs4 = tf.tensor(x4);
+
+    consolelog("xs4 : " + xs4);
   const xs5 = tf.tensor(x5);
+
+    consolelog("xs5 : " + xs5);
   // y = mx1 + mx2 + mx3 + b;
 
   //const mx1 = xs1.mul(m1);
   const mx2 = xs2.mul(m2);
+    consolelog("ms2 : " + mx2);
+
   const mx3 = xs3.mul(m3);
+    consolelog("ms3 : " + mx3);
   const mx4 = xs4.mul(m4);
+    consolelog("ms4 : " + mx4);
   const mx5 = xs5.mul(m5);
+    consolelog("ms5 : " + mx5);
 
   const ys = mx2.add(mx3).add(mx4).add(mx5).add(b);
   //console.log(ys.dataSync());
